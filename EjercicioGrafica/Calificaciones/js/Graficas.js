@@ -105,8 +105,6 @@ function ProcessExcel(data) {
 
 //Llena la variable Json que se utilizará para llenar el datasets de la grafica de barras
 var BarChart = function (list) {
-    var chartToPrint = document.getElementById('graficaBarras').getContext('2d');
-
     //Declaro la variable pero vacia
     var json =
         {
@@ -128,9 +126,7 @@ var BarChart = function (list) {
 
 //Llena la variable Json que se utilizará para llenar el datasets de la grafica de pastel
 var PieChart = function (list) {
-
-    var chartToPrint = document.getElementById('graficaPastel').getContext('2d');
-
+    //Declaro la variable pero vacia
     var json =
         {
             datas: [],
@@ -140,7 +136,7 @@ var PieChart = function (list) {
 
     var arrayPromedio = {};
 
-    //Lleno el arreglo de objetos key:Grado = [sumCalif, contador]
+    //Lleno el arreglo de objetos donde key:Grado = [sumCalif, contador]
     list.forEach(function (item) {
         if (arrayPromedio[item.Grado] === undefined) {
             arrayPromedio[item.Grado] = [parseFloat(item.Calificacion), 1];
@@ -150,7 +146,7 @@ var PieChart = function (list) {
         }
     });
 
-    //Lleno la variable json con el arreglo de objetos
+    //Lleno la variable json con el arreglo previamente llenado (arrayPromedio)
     for (var key in arrayPromedio) {
         json.label.push('Grado: ' + key);
         json.background.push(getRandomColor());
@@ -167,28 +163,29 @@ var textoPromedios = function (list) {
     var mejorCalif, menorCalif;
     var promedioGeneral = 0;
 
-    //Obtengo el alumno con mejor y menor calificacion, ademas de la suma de las calificaciones de todos los alumnos
+    //Leo cada item de la lista
     list.forEach(function (item) {
-        if (mejorCalif == null) {
+        //en caso de que mejorCalif o menorCalif sea null, incerto el primer valor en ambos arreglos
+        if (mejorCalif == null || menorCalif == null) {
             mejorCalif = [item.Nombres + ' ' + item['Apellido Paterno'] + ' ' + item['Apellido Materno'], item.Calificacion];
+            menorCalif = [item.Nombres + ' ' + item['Apellido Paterno'] + ' ' + item['Apellido Materno'], item.Calificacion];
         }
         else {
+            //Comparo el valor que contiene el arreglo mejorCalif con el item actual, 
+            //si el item.Calificacion es mayor a mejorCalif[1] --> (calificacion), cambio los valores del arreglo
             if (parseFloat(mejorCalif[1]) < parseFloat(item.Calificacion)) {
                 mejorCalif[0] = item.Nombres + ' ' + item['Apellido Paterno'] + ' ' + item['Apellido Materno'];
                 mejorCalif[1] = item.Calificacion;
             }
-        }
 
-        if (menorCalif == null) {
-            menorCalif = [item.Nombres + ' ' + item['Apellido Paterno'] + ' ' + item['Apellido Materno'], item.Calificacion];
-        }
-        else {
+            //Comparo el valor que contiene el arreglo menorCalif con el item actual,
+            //si el item.Calificacion es menor a menorCalif[1] --> (calificacion), cambio los valores del arreglo
             if (parseFloat(menorCalif[1]) > parseFloat(item.Calificacion)) {
                 menorCalif[0] = item.Nombres + ' ' + item['Apellido Paterno'] + ' ' + item['Apellido Materno'];
                 menorCalif[1] = item.Calificacion;
             }
         }
-
+        
         promedioGeneral = promedioGeneral + parseFloat(item.Calificacion);
     });
 
