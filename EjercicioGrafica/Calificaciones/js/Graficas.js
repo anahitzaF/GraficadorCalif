@@ -1,4 +1,5 @@
-﻿var myPieChart = new Chart($('#graficaPastel'),
+﻿//Creo mi grafica de pastel vacia
+var myPieChart = new Chart($('#graficaPastel'),
     {
         type: 'pie',
         data: data = {
@@ -20,6 +21,7 @@
         }
     });
 
+//Creo mi grafica de barras vacia
 var myBarChart = new Chart($('#graficaBarras'),
     {
         type: 'bar',
@@ -42,6 +44,7 @@ var myBarChart = new Chart($('#graficaBarras'),
         }
     });
 
+//Funcion que carga el archivo que fue seleccionado
 function Upload() {
 
     var fileUpload = document.getElementById("fileUpload");
@@ -80,6 +83,7 @@ function Upload() {
     }
 };
 
+//Funcion que lee el documento de excel y lo guarda en un json array
 function ProcessExcel(data) {
     //Leo documento de Excel
     var libroExcel = XLSX.read(data, {
@@ -89,7 +93,7 @@ function ProcessExcel(data) {
     //Obtengo el nombre de la primer hoja
     var primerHoja = libroExcel.SheetNames[0];
 
-    //Leo todas las filas de la primer hoja  en un Json array
+    //Leo todas las filas de la primer hoja y las coloco en un Json array
     var excelRows = XLSX.utils.sheet_to_row_object_array(libroExcel.Sheets[primerHoja]);
 
     BarChart(excelRows);
@@ -157,6 +161,7 @@ var PieChart = function (list) {
     addData(myPieChart, json);
 };
 
+//Funcion que obtiene el alumno con mejor y menor calificacion, ademas del promedio general de todos los alumnos
 var textoPromedios = function (list) {
 
     var mejorCalif, menorCalif;
@@ -233,6 +238,7 @@ function removeData(chart) {
     }
 }
 
+//Funcion que genera colores al azar
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
